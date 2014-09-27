@@ -1,0 +1,24 @@
+0011 0001 0000 0000 ; x3100 - starting address of the program
+
+; The program description and code starts here
+; The program stores the first value in R5 and performs N-R5 where N
+; refers to the other numbers. Each time the operation is performed
+; the program checks to see if the result was positive and if true
+; then the program stores the number N into R5.
+
+0101001001100000; AND R1,R1,#0      (clear the current value)
+0101010010100000; AND R2,R2,#0      (clear the current value)
+1110011000101111; LEA R3,000101111  (Store Array start address in R3)
+0101100100100000; AND R4,R4,#0      (clear the current value)
+0001100100101001; ADD R4,R4,#10     (Set R4 to 9)
+0110101011000000; LDR R5,R3,#0      (Load R5 with first value of array)
+0110001011000001; LDR R1,R3,#1      (Load R1 with Next value of array)
+1001010101111111; NOT R2,R5         (NOT R5 and store in R2)
+0001010010100001; ADD R2,R2,#1      (Add 1 to obtain 2's complement)
+0001010010000001; ADD R2,R2,R1	    (Add R2 and R1 completing subtraction)
+0000110000000001; BRNZ x310C	    (If statement to check result)
+0001101001100000; ADD R5,R1,#0 	    (Store R1 in R5)
+0001011011100001; ADD R3,R3,#1	    (Store address of Next value in R3)
+0001100100111111; ADD R4,R4,#-1     (Reduce Counter)
+0000001111110111; BRP x3106         (Loop if counter!=0)
+1111000000100101; 		    (Halt Program)
